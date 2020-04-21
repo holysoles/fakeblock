@@ -1,0 +1,1 @@
+{"ast":null,"code":"var __jsx = React.createElement;\nimport React from 'react';\nimport Avatar from '@material-ui/core/Avatar';\nexport default function MakeAvatar(source) {\n  return __jsx(Avatar, {\n    alt: \"Profile Picture\",\n    src: source\n  });\n}","map":null,"metadata":{},"sourceType":"module"}
