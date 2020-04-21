@@ -20,6 +20,11 @@ export default class MakeLightbox extends Component {
         let images = this.props.images;
         images.shift();
         console.log(images);
+
+        if(images.length === 0){
+            return <div/>
+        }
+
         return (
             <div>
                 <CardActionArea onClick={() => this.setState({ isOpen: true })}>

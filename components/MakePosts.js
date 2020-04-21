@@ -25,20 +25,18 @@ export default function MakePosts(postsArray) {
         let Avatar = MakeAvatar('/');
         const paragraphs = post.text.map((paragraph) => {
             return (
-                <Typography variant="body2" color="textSecondary" component="p">
+                <Typography variant="body2" component="p">
                     {paragraph}
                 </Typography>
             )
         });
-        console.log(post.img)
         const images = post.img.map((source) => {
             if (source.includes('p50x50')) {
                 Avatar = MakeAvatar(source)
-            } else {
+            }
+            else {
                 //console.log(source)
-                return (
-                    source
-                )
+                return source
             }
         });
 
@@ -48,10 +46,13 @@ export default function MakePosts(postsArray) {
                 <CardContent>
                     <div>
                         {Avatar}
-                        <Typography gutterBottom variant="h5" component="h2">
-                            User Name
+                        <Typography gutterBottom variant="h6">
+                            {post.user}
                         </Typography>
                     </div>
+                    <Typography gutterBottom variant="body2" color="textSecondary">
+                        {post.timestamp}
+                    </Typography>
                     {paragraphs}
                 </CardContent>
                 <CardActions>

@@ -226,11 +226,23 @@ var MakeLightbox = /*#__PURE__*/function (_Component) {
       var images = this.props.images;
       images.shift();
       console.log(images);
+
+      if (images.length === 0) {
+        return __jsx("div", {
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 25,
+            columnNumber: 20
+          }
+        });
+      }
+
       return __jsx("div", {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 24,
+          lineNumber: 29,
           columnNumber: 13
         }
       }, __jsx(_material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -242,7 +254,7 @@ var MakeLightbox = /*#__PURE__*/function (_Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 25,
+          lineNumber: 30,
           columnNumber: 17
         }
       }, __jsx(_material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -254,7 +266,7 @@ var MakeLightbox = /*#__PURE__*/function (_Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 26,
+          lineNumber: 31,
           columnNumber: 21
         }
       })), isOpen && __jsx(react_image_lightbox__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -279,7 +291,7 @@ var MakeLightbox = /*#__PURE__*/function (_Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 36,
+          lineNumber: 41,
           columnNumber: 21
         }
       }));
@@ -343,7 +355,6 @@ function MakePosts(postsArray) {
     var paragraphs = post.text.map(function (paragraph) {
       return __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
         variant: "body2",
-        color: "textSecondary",
         component: "p",
         __self: _this,
         __source: {
@@ -353,7 +364,6 @@ function MakePosts(postsArray) {
         }
       }, paragraph);
     });
-    console.log(post.img);
     var images = post.img.map(function (source) {
       if (source.includes('p50x50')) {
         Avatar = Object(_MakeAvatar__WEBPACK_IMPORTED_MODULE_0__["default"])(source);
@@ -367,7 +377,7 @@ function MakePosts(postsArray) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 46,
+        lineNumber: 44,
         columnNumber: 13
       }
     }, __jsx(_MakeLightbox__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -375,38 +385,47 @@ function MakePosts(postsArray) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 47,
+        lineNumber: 45,
         columnNumber: 17
       }
     }), __jsx(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_3__["default"], {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 48,
+        lineNumber: 46,
         columnNumber: 17
       }
     }, __jsx("div", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 49,
+        lineNumber: 47,
         columnNumber: 21
       }
     }, Avatar, __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
       gutterBottom: true,
-      variant: "h5",
-      component: "h2",
+      variant: "h6",
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 51,
+        lineNumber: 49,
         columnNumber: 25
       }
-    }, "User Name")), paragraphs), __jsx(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    }, post.user)), __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      gutterBottom: true,
+      variant: "body2",
+      color: "textSecondary",
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 57,
+        lineNumber: 53,
+        columnNumber: 21
+      }
+    }, post.timestamp), paragraphs), __jsx(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      __self: _this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 58,
         columnNumber: 17
       }
     }, __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -415,7 +434,7 @@ function MakePosts(postsArray) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 58,
+        lineNumber: 59,
         columnNumber: 21
       }
     }, "Share"), __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -424,7 +443,7 @@ function MakePosts(postsArray) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 61,
+        lineNumber: 62,
         columnNumber: 21
       }
     }, "Likes")));
@@ -23503,7 +23522,7 @@ var __N_SSP = true;
 
 /***/ }),
 
-/***/ 2:
+/***/ 1:
 /*!************************************************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F%5Bpage%5D%2Fposts&absolutePagePath=C%3A%5CUsers%5CPatrick%5CPhpstormProjects%5Cfakeblock%5Cpages%5C%5Bpage%5D%5Cposts.js ***!
   \************************************************************************************************************************************************************************/
@@ -23526,5 +23545,5 @@ module.exports = dll_2adc2403d89adc16ead0;
 
 /***/ })
 
-},[[2,"static/runtime/webpack.js"]]]);
+},[[1,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=posts.js.map

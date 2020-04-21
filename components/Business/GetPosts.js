@@ -3,9 +3,9 @@ import fetch from "node-fetch"
 import {Headers} from "node-fetch";
 import GetFBID from "../GetFBID";
 
-export default async function GetPosts(page){
+export default async function GetPosts(page) {
     const jsdom = require("jsdom");
-    const { JSDOM } = jsdom;
+    const {JSDOM} = jsdom;
     const dom = new JSDOM();
     const document = dom.window.document;
     let postsArray = [];
@@ -28,41 +28,48 @@ export default async function GetPosts(page){
         headers: headers,
         redirect: 'follow',
     };
-    const fullUrl = jsonUrl +'page_id='+ fbID +"&cursor="+ timelineCursor +'&'+ new URLSearchParams(params);
+    const fullUrl = jsonUrl + 'page_id=' + fbID + "&cursor=" + timelineCursor + '&' + new URLSearchParams(params);
     //fetch(fullUrl, opts).then(response => response.text()).then(rawRes => {})
 
-    const res = await fetch(fullUrl,opts);
-    if(res.ok){
+    const res = await fetch(fullUrl, opts);
+    if (res.ok) {
         console.log("response okay")
         //console.log(res)
         //need to get html updates from json response
         const resText = await res.text();
-        const rawJson = resText.replace("for (;;);","");
+        const rawJson = resText.replace("for (;;);", "");
         const postsJson = JSON.parse(rawJson);
         const rawHtml = postsJson.domops[0][3].__html;
         //construct doc from raw html string and get post wrapper elements into html collection
-        const postsDoc = document.createElement( 'html' );
+        const postsDoc = document.createElement('html');
         postsDoc.innerHTML = rawHtml;
         //get posts elements from html doc
         const postWrappers = postsDoc.getElementsByClassName("_5pcr userContentWrapper");
         //const postMessages = postsDoc.querySelectorAll("div[data-testid='post_message']");
 
-        console.log("how many post containers: ",postWrappers.length)
-        for(let i = 0; i < postWrappers.length; i++) {
-            let post = {text:[], img: []};
+        console.log("how many post containers: ", postWrappers.length)
+        for (let i = 0; i < postWrappers.length; i++) {
+            let post = {user: '', timestamp: '', text: [], img: []};
             const postImages = postWrappers[i].getElementsByTagName('img');
-            const postParagraphs = postWrappers[i].getElementsByTagName( 'p');
+            const postParagraphs = postWrappers[i].getElementsByTagName('p');
+
+            //get username name, timestamp from post
+            const usernameWrapper = postWrappers[i].getElementsByClassName('fwb').item(0);
+            const username = usernameWrapper.textContent;
+            post.user = username;
+            const timestamp = postWrappers[i].getElementsByClassName('timestampContent')[0].textContent;
+            post.timestamp = timestamp;
 
             //if post has paragraphs, iterate over each and push to text array in post object
-            for(let j=0; j < postParagraphs.length; j++){
+            for (let j = 0; j < postParagraphs.length; j++) {
                 post.text.push(postParagraphs[j].textContent);
             }
             //if post has images, iterate over each and push to image array in post object
-            if(postImages.length > 0){
-                for(let k=0; k < postImages.length; k++){
+            if (postImages.length > 0) {
+                for (let k = 0; k < postImages.length; k++) {
                     const image = postImages.item(k);
                     const imagesToIgnore = "Image may contain: possible text that says 'Shop Now'";
-                    if(image.getAttribute('alt')!== imagesToIgnore){
+                    if (image.getAttribute('alt') !== imagesToIgnore) {
                         post.img.push(image.getAttribute('src'));
                     }
                 }
@@ -71,8 +78,7 @@ export default async function GetPosts(page){
         }
         console.log("returning postsArray");
         return postsArray
-    }
-    else{
+    } else {
         console.log("response failed");
         return []
     }

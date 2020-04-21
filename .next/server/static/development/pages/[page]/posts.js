@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -162,11 +162,19 @@ async function GetPosts(page) {
 
     for (let i = 0; i < postWrappers.length; i++) {
       let post = {
+        user: '',
+        timestamp: '',
         text: [],
         img: []
       };
       const postImages = postWrappers[i].getElementsByTagName('img');
-      const postParagraphs = postWrappers[i].getElementsByTagName('p'); //if post has paragraphs, iterate over each and push to text array in post object
+      const postParagraphs = postWrappers[i].getElementsByTagName('p'); //get username name, timestamp from post
+
+      const usernameWrapper = postWrappers[i].getElementsByClassName('fwb').item(0);
+      const username = usernameWrapper.textContent;
+      post.user = username;
+      const timestamp = postWrappers[i].getElementsByClassName('timestampContent')[0].textContent;
+      post.timestamp = timestamp; //if post has paragraphs, iterate over each and push to text array in post object
 
       for (let j = 0; j < postParagraphs.length; j++) {
         post.text.push(postParagraphs[j].textContent);
@@ -456,11 +464,23 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     let images = this.props.images;
     images.shift();
     console.log(images);
+
+    if (images.length === 0) {
+      return __jsx("div", {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 25,
+          columnNumber: 20
+        }
+      });
+    }
+
     return __jsx("div", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 24,
+        lineNumber: 29,
         columnNumber: 13
       }
     }, __jsx(_material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -470,7 +490,7 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 25,
+        lineNumber: 30,
         columnNumber: 17
       }
     }, __jsx(_material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_3___default.a, {
@@ -482,7 +502,7 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 26,
+        lineNumber: 31,
         columnNumber: 21
       }
     })), isOpen && __jsx(react_image_lightbox__WEBPACK_IMPORTED_MODULE_1___default.a, {
@@ -501,7 +521,7 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 36,
+        lineNumber: 41,
         columnNumber: 21
       }
     }));
@@ -565,7 +585,6 @@ function MakePosts(postsArray) {
     const paragraphs = post.text.map(paragraph => {
       return __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
         variant: "body2",
-        color: "textSecondary",
         component: "p",
         __self: this,
         __source: {
@@ -575,7 +594,6 @@ function MakePosts(postsArray) {
         }
       }, paragraph);
     });
-    console.log(post.img);
     const images = post.img.map(source => {
       if (source.includes('p50x50')) {
         Avatar = Object(_MakeAvatar__WEBPACK_IMPORTED_MODULE_0__["default"])(source);
@@ -589,7 +607,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 46,
+        lineNumber: 44,
         columnNumber: 13
       }
     }, __jsx(_MakeLightbox__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -597,38 +615,47 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 47,
+        lineNumber: 45,
         columnNumber: 17
       }
     }), __jsx(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_3___default.a, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 48,
+        lineNumber: 46,
         columnNumber: 17
       }
     }, __jsx("div", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 49,
+        lineNumber: 47,
         columnNumber: 21
       }
     }, Avatar, __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
       gutterBottom: true,
-      variant: "h5",
-      component: "h2",
+      variant: "h6",
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 51,
+        lineNumber: 49,
         columnNumber: 25
       }
-    }, "User Name")), paragraphs), __jsx(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_5___default.a, {
+    }, post.user)), __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
+      gutterBottom: true,
+      variant: "body2",
+      color: "textSecondary",
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 57,
+        lineNumber: 53,
+        columnNumber: 21
+      }
+    }, post.timestamp), paragraphs), __jsx(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_5___default.a, {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 58,
         columnNumber: 17
       }
     }, __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
@@ -637,7 +664,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 58,
+        lineNumber: 59,
         columnNumber: 21
       }
     }, "Share"), __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
@@ -646,7 +673,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 61,
+        lineNumber: 62,
         columnNumber: 21
       }
     }, "Likes")));
@@ -742,7 +769,7 @@ const Page = ({
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /*!*************************************!*\
   !*** multi ./pages/[page]/posts.js ***!
   \*************************************/
