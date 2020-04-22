@@ -1,5 +1,5 @@
 import {useRouter} from "next/router";
-import HeaderBar from "../../components/HeaderBar";
+import HeaderBar from "../../components/nav/HeaderBar";
 import React from "react";
 import axios from 'axios'
 import SearchResults from "../../components/SearchResults";
@@ -7,7 +7,7 @@ import SearchResults from "../../components/SearchResults";
 export async function getServerSideProps(context){
     const query = context.params.pagesearch;
     //api key for google search
-    const apiKey = 'AIzaSyDPDWPBR6U4jktm6-Mf48I3B4MBPGrE-oo'
+    const apiKey = 'AIzaSyDPDWPBR6U4jktm6-Mf48I3B4MBPGrE-oo';
     const searchUrl = 'https://www.googleapis.com/customsearch/v1?key='+ apiKey +'&cx=009314889963947572451' +
         ':y8n4xwymi73&q=' + query;
     const response = await axios.get(searchUrl);

@@ -1,7 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
 import SearchBars from "../components/SearchBars";
-import HeaderBar from "../components/HeaderBar";
+import HeaderBar from "../components/nav/HeaderBar";
 
 
 export default function Index() {

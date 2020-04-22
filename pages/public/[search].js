@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router';
-import HeaderBar from "../../components/HeaderBar";
+import HeaderBar from "../../components/nav/HeaderBar";
 import axios from 'axios'
 import GetFBID from "../../components/GetFBID";
 
@@ -11,7 +11,7 @@ export async function getServerSideProps(context){
         return
     }
     //make and await axios request on public search page
-    console.log("searchquery: ",query)
+    console.log("searchquery: ",query);
     const searchUrl = 'https://www.facebook.com/public/'+ query;
     let res = await axios.get(searchUrl);
     let htmlText = await res.data;
@@ -80,7 +80,7 @@ const Page = ({results}) => {
 
         return(
             <li key={resultLink}>
-                <img src={resultImage} width="72" height="72"/>
+                <img src={resultImage} alt={resultName} width="72" height="72"/>
                 <a href={resultLink}>{resultName}</a>
             </li>
         )

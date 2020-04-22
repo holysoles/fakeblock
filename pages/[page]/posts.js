@@ -1,10 +1,8 @@
 import {useRouter} from "next/router";
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import GetPosts from "../../components/Business/GetPosts";
-import HeaderBar from "../../components/HeaderBar";
-import MakeAvatar from "../../components/MakeAvatar";
-import MakePosts from "../../components/MakePosts";
+import GetPosts from "../../components/Posts/GetPosts";
+import HeaderBar from "../../components/nav/HeaderBar";
+import MakePosts from "../../components/Posts/MakePosts";
 
 export async function getServerSideProps(context){
     let page = context.query.page;

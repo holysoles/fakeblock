@@ -1,10 +1,10 @@
 import {useRouter} from "next/router";
-import HeaderBar from "../../components/HeaderBar";
+import HeaderBar from "../../components/nav/HeaderBar";
 import React from "react";
 import GetSideBar from "../../components/Business/GetSideBar";
 import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
-import MakeMenu from "../../components/MakeMenu";
+import MakeMenu from "../../components/Posts/MakeMenu";
 import fetch from "node-fetch";
 
 export async function getServerSideProps(context){
@@ -25,7 +25,7 @@ export async function getServerSideProps(context){
 
 
     const pageName = document.getElementById("pageTitle").innerHTML;
-    console.log(pageName)
+    console.log(pageName);
 
     //pass html document to functions to get various page elements
     let sidebarLinks = await GetSideBar(document);
