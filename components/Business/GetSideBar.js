@@ -12,8 +12,11 @@ export default function GetSidebar(document){
             if(optionText.includes("&amp;")){
                 optionText = optionText.replace("&amp;","&")
             }
-            //push to object array that gets passed as props to server
-            data.push({text: optionText, link: optionLink});
+            //push to object array for menu if feature is built
+            const availablePages = ["Posts", "Photos", "Videos", "About", "Events", "Menu", "Reviews"];
+            if(availablePages.includes(optionText)){
+                data.push({text: optionText, link: optionLink});
+            }
         }
         return data
     }

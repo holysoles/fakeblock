@@ -1,9 +1,11 @@
 import {useRouter} from "next/router";
 import HeaderBar from "../../components/HeaderBar";
 import React from "react";
-import axios from 'axios'
 import GetSideBar from "../../components/Business/GetSideBar";
-import GetFeed from "../../components/Business/GetFeed";
+import Paper from "@material-ui/core/Paper";
+import MenuList from "@material-ui/core/MenuList";
+import MakeMenu from "../../components/MakeMenu";
+import fetch from "node-fetch";
 
 export async function getServerSideProps(context){
     //handle if person or business url
@@ -11,43 +13,43 @@ export async function getServerSideProps(context){
 
     //axios request for page
     let page = context.query.page;
-    let pageUrl = "http://www.facebook.com/" + page;
-    const res = await axios.get(pageUrl);
+    let pageUrl = "https://www.facebook.com/"+ page +"/";
+    const res = await fetch(pageUrl);
+    const resText = await res.text();
 
     //import jsdom for dom capabilties on server
     const jsdom = require("jsdom");
     const { JSDOM } = jsdom;
-    const dom = new JSDOM(res.data);
+    const dom = new JSDOM(resText);
     const document = dom.window.document;
+
+
+    const pageName = document.getElementById("pageTitle").innerHTML;
+    console.log(pageName)
 
     //pass html document to functions to get various page elements
     let sidebarLinks = await GetSideBar(document);
     //right sidebar PagesProfileHomeSecondaryColumnPagelet
-    //let mainFeed = await GetFeed(document);
-    return{props:{sidebarLinks}}
+    return{props:{pageName, sidebarLinks}}
 }
 
-const Page = ({sidebarLinks}) => {
+const Page = ({pageName, sidebarLinks}) => {
     const router = useRouter();
 
-    const sidebar = sidebarLinks.map((item) => {
-        let text = item.text;
-        let link = item.link;
-        return(
-            <li key={link}>
-                <a href={link}>{text}</a>
-            </li>
-        )
+    const pageMenu = sidebarLinks.map((item) => {
+        return MakeMenu(item)
     });
 
     return (
         <div>
             <HeaderBar />
             <div>
-                <h1>{router.query.page}</h1>
-                <ul>
-                    {sidebar}
-                </ul>
+                <h1>{pageName}</h1>
+                <Paper>
+                    <MenuList>
+                        {pageMenu}
+                    </MenuList>
+                </Paper>
             </div>
         </div>
     );

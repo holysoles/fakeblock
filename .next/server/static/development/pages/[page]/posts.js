@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -122,7 +122,6 @@ async function GetPosts(page) {
   const document = dom.window.document;
   let postsArray = [];
   const fbID = await Object(_GetFBID__WEBPACK_IMPORTED_MODULE_2__["default"])(page);
-  console.log("got id, moving on");
   const jsonUrl = 'https://www.facebook.com/pages_reaction_units/more/?'; //timeline cursor appears to set where posts get request starts from
 
   const timelineCursor = "%7B%22timeline_cursor%22%3A%22AQHRoDgKgwnQmRz8-7LyXTbs8467llbU4E2FkvBASG8-CkOTDUtCxL2Rbx" + "_u0_cGtwwSP-aOXMsTVCNr62TMoNdjl0EmuzWGBCNQrxeyKxMb4hQQMNqhGGJtLN8VYY5vIYUR%22%2C%22timeline_section_cursor%22" + "%3Anull%2C%22has_next_page%22%3Atrue%7D";
@@ -140,13 +139,12 @@ async function GetPosts(page) {
     headers: headers,
     redirect: 'follow'
   };
-  const fullUrl = jsonUrl + 'page_id=' + fbID + "&cursor=" + timelineCursor + '&' + new URLSearchParams(params); //fetch(fullUrl, opts).then(response => response.text()).then(rawRes => {})
-
+  const fullUrl = jsonUrl + 'page_id=' + fbID + "&cursor=" + timelineCursor + '&' + new URLSearchParams(params);
+  console.log(fullUrl);
   const res = await node_fetch__WEBPACK_IMPORTED_MODULE_1___default()(fullUrl, opts);
 
   if (res.ok) {
-    console.log("response okay"); //console.log(res)
-    //need to get html updates from json response
+    console.log("response okay"); //need to get html updates from json response
 
     const resText = await res.text();
     const rawJson = resText.replace("for (;;);", "");
@@ -161,11 +159,13 @@ async function GetPosts(page) {
     console.log("how many post containers: ", postWrappers.length);
 
     for (let i = 0; i < postWrappers.length; i++) {
+      //construct post object
       let post = {
         user: '',
         timestamp: '',
         text: [],
-        img: []
+        images: [],
+        video: ''
       };
       const postImages = postWrappers[i].getElementsByTagName('img');
       const postParagraphs = postWrappers[i].getElementsByTagName('p'); //get username name, timestamp from post
@@ -187,15 +187,23 @@ async function GetPosts(page) {
           const imagesToIgnore = "Image may contain: possible text that says 'Shop Now'";
 
           if (image.getAttribute('alt') !== imagesToIgnore) {
-            post.img.push(image.getAttribute('src'));
+            post.images.push(image.getAttribute('src'));
           }
         }
+      } //if post has a video, grab source and set video property in post object
+
+
+      const postHasVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
+
+      if (postHasVideo.length > 0) {
+        const videoSource = postHasVideo[0].attributes.ajaxify.value;
+        const videoUrl = "https://www.facebook.com" + videoSource;
+        post.video = videoUrl;
       }
 
       postsArray.push(post);
     }
 
-    console.log("returning postsArray");
     return postsArray;
   } else {
     console.log("response failed");
@@ -463,14 +471,13 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     } = this.state;
     let images = this.props.images;
     images.shift();
-    console.log(images);
 
     if (images.length === 0) {
       return __jsx("div", {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 25,
+          lineNumber: 24,
           columnNumber: 20
         }
       });
@@ -480,7 +487,7 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 29,
+        lineNumber: 28,
         columnNumber: 13
       }
     }, __jsx(_material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -490,7 +497,7 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 30,
+        lineNumber: 29,
         columnNumber: 17
       }
     }, __jsx(_material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_3___default.a, {
@@ -502,7 +509,7 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 31,
+        lineNumber: 30,
         columnNumber: 21
       }
     })), isOpen && __jsx(react_image_lightbox__WEBPACK_IMPORTED_MODULE_1___default.a, {
@@ -521,7 +528,7 @@ class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 41,
+        lineNumber: 40,
         columnNumber: 21
       }
     }));
@@ -557,8 +564,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _MakeLightbox__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./MakeLightbox */ "./components/MakeLightbox.js");
+/* harmony import */ var _MakeVideoPlayer__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./MakeVideoPlayer */ "./components/MakeVideoPlayer.js");
+/* harmony import */ var react_image_lightbox__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-image-lightbox */ "react-image-lightbox");
+/* harmony import */ var react_image_lightbox__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(react_image_lightbox__WEBPACK_IMPORTED_MODULE_10__);
 var _jsxFileName = "C:\\Users\\Patrick\\PhpstormProjects\\fakeblock\\components\\MakePosts.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
+
 
 
 
@@ -573,64 +585,85 @@ const useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7__["
     maxWidth: 750
   }
 });
-
-function openLightbox() {
-  console.log('clicked');
-}
-
 function MakePosts(postsArray) {
   const classes = useStyles();
   const postsList = postsArray.map(post => {
     let Avatar = Object(_MakeAvatar__WEBPACK_IMPORTED_MODULE_0__["default"])('/');
-    const paragraphs = post.text.map(paragraph => {
+    const paragraphs = post.text.map((paragraph, index) => {
       return __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
         variant: "body2",
         component: "p",
+        key: index,
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 28,
+          lineNumber: 26,
           columnNumber: 17
         }
       }, paragraph);
     });
-    const images = post.img.map(source => {
+    let images = post.images.map(source => {
+      //if image is avatar
       if (source.includes('p50x50')) {
         Avatar = Object(_MakeAvatar__WEBPACK_IMPORTED_MODULE_0__["default"])(source);
       } else {
-        //console.log(source)
         return source;
       }
     });
-    return __jsx(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2___default.a, {
-      className: classes.root,
-      __self: this,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 44,
-        columnNumber: 13
-      }
-    }, __jsx(_MakeLightbox__WEBPACK_IMPORTED_MODULE_8__["default"], {
+
+    let media = __jsx(_MakeLightbox__WEBPACK_IMPORTED_MODULE_8__["default"], {
       images: images,
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 45,
-        columnNumber: 17
+        lineNumber: 41,
+        columnNumber: 21
       }
-    }), __jsx(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_3___default.a, {
+    }); //if there is a video post, overwrite thumbnail with video player component
+
+
+    if (post.video.length > 0) {
+      media = __jsx(_MakeVideoPlayer__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        source: post.video,
+        thumb: post.images[1],
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 44,
+          columnNumber: 21
+        }
+      });
+    }
+
+    return __jsx("li", {
+      key: post.timestamp,
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 46,
+        lineNumber: 50,
+        columnNumber: 13
+      }
+    }, __jsx(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2___default.a, {
+      className: classes.root,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 51,
         columnNumber: 17
+      }
+    }, media, __jsx(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_3___default.a, {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 53,
+        columnNumber: 21
       }
     }, __jsx("div", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 47,
-        columnNumber: 21
+        lineNumber: 54,
+        columnNumber: 25
       }
     }, Avatar, __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
       gutterBottom: true,
@@ -638,8 +671,8 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 49,
-        columnNumber: 25
+        lineNumber: 56,
+        columnNumber: 29
       }
     }, post.user)), __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
       gutterBottom: true,
@@ -648,15 +681,15 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 53,
-        columnNumber: 21
+        lineNumber: 60,
+        columnNumber: 25
       }
     }, post.timestamp), paragraphs), __jsx(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_5___default.a, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 58,
-        columnNumber: 17
+        lineNumber: 65,
+        columnNumber: 21
       }
     }, __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
       size: "small",
@@ -664,8 +697,8 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 59,
-        columnNumber: 21
+        lineNumber: 66,
+        columnNumber: 25
       }
     }, "Share"), __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
       size: "small",
@@ -673,12 +706,53 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 62,
-        columnNumber: 21
+        lineNumber: 69,
+        columnNumber: 25
       }
-    }, "Likes")));
+    }, "Likes"))));
   });
   return postsList;
+}
+
+/***/ }),
+
+/***/ "./components/MakeVideoPlayer.js":
+/*!***************************************!*\
+  !*** ./components/MakeVideoPlayer.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MakeVideoPlayer; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-player */ "react-player");
+/* harmony import */ var react_player__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_player__WEBPACK_IMPORTED_MODULE_1__);
+var _jsxFileName = "C:\\Users\\Patrick\\PhpstormProjects\\fakeblock\\components\\MakeVideoPlayer.js";
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+
+class MakeVideoPlayer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return __jsx(react_player__WEBPACK_IMPORTED_MODULE_1___default.a, {
+      url: this.props.source,
+      light: this.props.thumb,
+      controls: true,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 10,
+        columnNumber: 16
+      }
+    });
+  }
+
 }
 
 /***/ }),
@@ -769,7 +843,7 @@ const Page = ({
 
 /***/ }),
 
-/***/ 3:
+/***/ 5:
 /*!*************************************!*\
   !*** multi ./pages/[page]/posts.js ***!
   \*************************************/
@@ -987,6 +1061,17 @@ module.exports = require("react");
 /***/ (function(module, exports) {
 
 module.exports = require("react-image-lightbox");
+
+/***/ }),
+
+/***/ "react-player":
+/*!*******************************!*\
+  !*** external "react-player" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("react-player");
 
 /***/ })
 

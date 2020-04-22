@@ -11,7 +11,6 @@ export default async function GetPosts(page) {
     let postsArray = [];
 
     const fbID = await GetFBID(page);
-    console.log("got id, moving on");
     const jsonUrl = 'https://www.facebook.com/pages_reaction_units/more/?';
     //timeline cursor appears to set where posts get request starts from
     const timelineCursor = "%7B%22timeline_cursor%22%3A%22AQHRoDgKgwnQmRz8-7LyXTbs8467llbU4E2FkvBASG8-CkOTDUtCxL2Rbx" +
@@ -29,12 +28,11 @@ export default async function GetPosts(page) {
         redirect: 'follow',
     };
     const fullUrl = jsonUrl + 'page_id=' + fbID + "&cursor=" + timelineCursor + '&' + new URLSearchParams(params);
-    //fetch(fullUrl, opts).then(response => response.text()).then(rawRes => {})
+    console.log(fullUrl);
 
     const res = await fetch(fullUrl, opts);
     if (res.ok) {
-        console.log("response okay")
-        //console.log(res)
+        console.log("response okay");
         //need to get html updates from json response
         const resText = await res.text();
         const rawJson = resText.replace("for (;;);", "");
@@ -49,7 +47,8 @@ export default async function GetPosts(page) {
 
         console.log("how many post containers: ", postWrappers.length)
         for (let i = 0; i < postWrappers.length; i++) {
-            let post = {user: '', timestamp: '', text: [], img: []};
+            //construct post object
+            let post = {user: '', timestamp: '', text: [], images: [], video: ''};
             const postImages = postWrappers[i].getElementsByTagName('img');
             const postParagraphs = postWrappers[i].getElementsByTagName('p');
 
@@ -70,13 +69,19 @@ export default async function GetPosts(page) {
                     const image = postImages.item(k);
                     const imagesToIgnore = "Image may contain: possible text that says 'Shop Now'";
                     if (image.getAttribute('alt') !== imagesToIgnore) {
-                        post.img.push(image.getAttribute('src'));
+                        post.images.push(image.getAttribute('src'));
                     }
                 }
             }
+            //if post has a video, grab source and set video property in post object
+            const postHasVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
+            if(postHasVideo.length > 0){
+                const videoSource = postHasVideo[0].attributes.ajaxify.value;
+                const videoUrl = "https://www.facebook.com" + videoSource;
+                post.video = (videoUrl)
+            }
             postsArray.push(post);
         }
-        console.log("returning postsArray");
         return postsArray
     } else {
         console.log("response failed");
