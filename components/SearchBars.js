@@ -25,6 +25,9 @@ class SearchBars extends React.Component {
     render() {
         return(
             <div>
+                <noscript>
+                    Search Requires Javascript to be Enabled
+                </noscript>
                 <div>
                     <h3> Search People</h3>
                     <input type='text' value={this.state.personQuery} onChange={(event => this.handlePeopleChange(event))}
@@ -37,7 +40,7 @@ class SearchBars extends React.Component {
                 </div>
                 <div>
                     <h3> Search Businesses</h3>
-                    <input type='text' value={this.state.businessQuery} onChange={(event => this.handleBusinessChange(event))}
+                    <input type='text' value={this.state.businessQuery} id={'business'} onChange={(event => this.handleBusinessChange(event))}
                     />
                     <button id='searchButton' onClick={()=>{this.getQuery}}>
                         <Link href={`/search/${this.state.businessQuery}`}>

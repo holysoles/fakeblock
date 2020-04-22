@@ -7,6 +7,11 @@ export default class MakeVideoPlayer extends Component {
     }
 
     render () {
-        return <ReactPlayer url={this.props.source} light={this.props.thumb} controls/>
+        return (
+            <div>
+                <ReactPlayer url={this.props.source} light={this.props.thumb} controls/>
+                <noscript>Embedded Videos Require Javascript to Play</noscript>
+            </div>
+        )
     }
 }

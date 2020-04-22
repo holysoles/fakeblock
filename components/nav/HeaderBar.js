@@ -1,11 +1,23 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import {useRouter} from "next/router";
 import DrawerMenu from "./DrawerMenu";
+import {ThemeProvider} from "@material-ui/styles";
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#3b5998'
+        },
+        secondary: {
+            main: '#000000',
+        },
+    },
+});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,16 +47,18 @@ export default function HeaderBar() {
     const router = useRouter();
 
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
-                    <DrawerMenu/>
-                    <Typography variant="h5" className={classes.title}>
-                        Fakeblock
-                    </Typography>
-                    <Button onClick={()=>{handleFBRedirect(router.asPath)}} color="inherit">Open on FB</Button>
-                </Toolbar>
-            </AppBar>
-        </div>
+        <ThemeProvider theme={theme}>
+            <div className={classes.root}>
+                <AppBar position="static" >
+                    <Toolbar>
+                        <DrawerMenu/>
+                        <Typography variant="h5" className={classes.title}>
+                            Fakeblock
+                        </Typography>
+                        <Button onClick={()=>{handleFBRedirect(router.asPath)}} color="inherit">Open on FB</Button>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        </ThemeProvider>
     );
 }

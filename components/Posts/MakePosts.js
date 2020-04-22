@@ -12,6 +12,7 @@ import MakeVideoPlayer from "./MakeVideoPlayer";
 const useStyles = makeStyles({
     root: {
         maxWidth: 750,
+        'margin': '15px',
     },
 });
 
@@ -29,8 +30,8 @@ export default function MakePosts(postsArray) {
         });
         let images = post.images.map((source) => {
             //if image is avatar
-            if (source.includes('p50x50')) {
-                Avatar = MakeAvatar(source)
+            if (source.includes('cp0')) {
+                Avatar = MakeAvatar(source, post.user)
             }
             else {
                 return source
@@ -43,11 +44,8 @@ export default function MakePosts(postsArray) {
             media = <MakeVideoPlayer source={post.video} thumb={post.images[1]} />
         }
 
-
-
         return (
-            <li key={post.timestamp}>
-                <Card className={classes.root}>
+                <Card key={post.timestamp} className={classes.root}>
                     {media}
                     <CardContent>
                         <div>
@@ -70,7 +68,6 @@ export default function MakePosts(postsArray) {
                         </Button>
                     </CardActions>
                 </Card>
-            </li>
         )
     });
     return postsList

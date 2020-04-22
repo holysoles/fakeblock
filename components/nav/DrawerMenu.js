@@ -50,8 +50,8 @@ export default function DrawerMenu() {
         >
             <List>
                 {['Home', 'About'].map((text, index) => (
-                    <Link href={text === 'Home' ? '/' : '/'+ text}>
-                        <ListItem button key={text}>
+                    <Link href={text === 'Home' ? '/' : '/'+ text}  key={text}>
+                        <ListItem button>
                             <ListItemIcon>{index % 2 === 0 ? <HomeIcon/> : <InfoIcon/>}</ListItemIcon>
                             <ListItemText primary={text}/>
                         </ListItem>

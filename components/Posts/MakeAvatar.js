@@ -2,9 +2,9 @@ import React from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
 
-export default function MakeAvatar(source) {
+export default function MakeAvatar(source, user) {
 
     return (
-        <Avatar alt="Profile Picture" src={source} />
+        <Avatar alt={user} src={source} />
     );
 }

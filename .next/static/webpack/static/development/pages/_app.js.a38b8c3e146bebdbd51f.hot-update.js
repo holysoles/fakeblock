@@ -1,0 +1,18 @@
+webpackHotUpdate("static\\development\\pages\\_app.js",{
+
+/***/ "./node_modules/css-loader/dist/cjs.js?!./node_modules/next/dist/compiled/postcss-loader/index.js?!./styles/app.css":
+/*!***************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ref--5-oneOf-5-1!./node_modules/next/dist/compiled/postcss-loader??__nextjs_postcss!./styles/app.css ***!
+  \***************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(true);
+// Module
+exports.push([module.i, ".background {\r\n    background-color: '#3b5998';\r\n}", "",{"version":3,"sources":["C:/Users/Patrick/PhpstormProjects/fakeblock/styles/app.css"],"names":[],"mappings":"AAAA;IACI,2BAA2B;AAC/B","file":"app.css","sourcesContent":[".background {\r\n    background-color: '#3b5998';\r\n}"]}]);
+
+
+/***/ })
+
+})
+//# sourceMappingURL=_app.js.a38b8c3e146bebdbd51f.hot-update.js.map
