@@ -2,6 +2,7 @@ import React from "react";
 import fetch from "node-fetch"
 import {Headers} from "node-fetch";
 import GetFBID from "../GetFBID";
+import GetTrueVideoSource from "./GetTrueVideoSource";
 
 export default async function GetPosts(page) {
     const jsdom = require("jsdom");
@@ -28,7 +29,6 @@ export default async function GetPosts(page) {
         redirect: 'follow',
     };
     const fullUrl = jsonUrl + 'page_id=' + fbID + "&cursor=" + timelineCursor + '&' + new URLSearchParams(params);
-    console.log(fullUrl);
 
     const res = await fetch(fullUrl, opts);
     if (res.ok) {
@@ -43,9 +43,8 @@ export default async function GetPosts(page) {
         postsDoc.innerHTML = rawHtml;
         //get posts elements from html doc
         const postWrappers = postsDoc.getElementsByClassName("_5pcr userContentWrapper");
-        //const postMessages = postsDoc.querySelectorAll("div[data-testid='post_message']");
 
-        console.log("how many post containers: ", postWrappers.length)
+        //console.log("how many post containers: ", postWrappers.length)
         for (let i = 0; i < postWrappers.length; i++) {
             //construct post object
             let post = {user: '', timestamp: '', text: [], images: [], video: ''};
@@ -77,8 +76,9 @@ export default async function GetPosts(page) {
             const postHasVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
             if(postHasVideo.length > 0){
                 const videoSource = postHasVideo[0].attributes.ajaxify.value;
-                const videoUrl = "https://www.facebook.com" + videoSource;
-                post.video = (videoUrl)
+                const embeddedVideo = "https://www.facebook.com" + videoSource;
+                const trueSource = await GetTrueVideoSource(this.props.source);
+                post.video = (embeddedVideo)
             }
             postsArray.push(post);
         }

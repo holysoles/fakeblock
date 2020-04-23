@@ -373,7 +373,7 @@ exports.push([module.i, "@-webkit-keyframes closeWindow {\n  0% {\n    opacity: 
 
 exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(true);
 // Module
-exports.push([module.i, ".pagetitle{\r\n    padding-top: 3%;\r\n}", "",{"version":3,"sources":["C:/Users/Patrick/PhpstormProjects/fakeblock/styles/app.css"],"names":[],"mappings":"AAAA;IACI,eAAe;AACnB","file":"app.css","sourcesContent":[".pagetitle{\r\n    padding-top: 3%;\r\n}"]}]);
+exports.push([module.i, ".pagetitle{\r\n    padding-top: 3%;\r\n}\r\n.videoTitle{\r\n    display:block;\r\n    height:250px;\r\n}", "",{"version":3,"sources":["C:/Users/Patrick/PhpstormProjects/fakeblock/styles/app.css"],"names":[],"mappings":"AAAA;IACI,eAAe;AACnB;AACA;IACI,aAAa;IACb,YAAY;AAChB","file":"app.css","sourcesContent":[".pagetitle{\r\n    padding-top: 3%;\r\n}\r\n.videoTitle{\r\n    display:block;\r\n    height:250px;\r\n}"]}]);
 
 
 /***/ }),

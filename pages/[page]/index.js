@@ -11,7 +11,7 @@ export async function getServerSideProps(context){
     //handle if person or business url
     //assume business url
 
-    //axios request for page
+    //get request for page
     let page = context.query.page;
     let pageUrl = "https://www.facebook.com/"+ page +"/";
     const res = await fetch(pageUrl);
@@ -23,9 +23,11 @@ export async function getServerSideProps(context){
     const dom = new JSDOM(resText);
     const document = dom.window.document;
 
-
-    const pageName = document.getElementById("pageTitle").innerHTML;
-    console.log(pageName);
+    const pageNameElement = document.getElementById("pageTitle");
+    let pageName = 'Facebook Page Not Found';
+    if(pageNameElement !== null){
+        pageName = pageNameElement.innerHTML;
+    }
 
     //pass html document to functions to get various page elements
     let sidebarLinks = await GetSideBar(document);

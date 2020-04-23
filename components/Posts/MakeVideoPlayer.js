@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
+import GetTrueVideoSource from "./GetTrueVideoSource";
 
 export default class MakeVideoPlayer extends Component {
     constructor(props) {
@@ -8,8 +9,8 @@ export default class MakeVideoPlayer extends Component {
 
     render () {
         return (
-            <div>
-                <ReactPlayer url={this.props.source} light={this.props.thumb} controls/>
+            <div className={'videoPlayer'}>
+                <ReactPlayer url={this.props.source} light={this.props.thumb}/>
                 <noscript>Embedded Videos Require Javascript to Play</noscript>
             </div>
         )
