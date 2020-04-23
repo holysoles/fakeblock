@@ -77,7 +77,7 @@ export default async function GetPosts(page) {
             if(postHasVideo.length > 0){
                 const videoSource = postHasVideo[0].attributes.ajaxify.value;
                 const embeddedVideo = "https://www.facebook.com" + videoSource;
-                const trueSource = await GetTrueVideoSource(this.props.source);
+                const trueSource = await GetTrueVideoSource(embeddedVideo);
                 post.video = (embeddedVideo)
             }
             postsArray.push(post);
