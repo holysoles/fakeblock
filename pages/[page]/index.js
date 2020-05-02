@@ -4,7 +4,7 @@ import React from "react";
 import GetSideBar from "../../components/Business/GetSideBar";
 import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
-import MakeMenu from "../../components/Posts/MakeMenu";
+import MakeMenu from "../../components/Business/MakeMenu";
 import fetch from "node-fetch";
 
 export async function getServerSideProps(context){
@@ -26,7 +26,9 @@ export async function getServerSideProps(context){
     const pageNameElement = document.getElementById("pageTitle");
     let pageName = 'Facebook Page Not Found';
     if(pageNameElement !== null){
+        //get pagename and remove unnecessary text
         pageName = pageNameElement.innerHTML;
+        pageName = pageName.replace("| Facebook","");
     }
 
     //pass html document to functions to get various page elements
@@ -39,8 +41,11 @@ const Page = ({pageName, sidebarLinks}) => {
     const router = useRouter();
 
     const pageMenu = sidebarLinks.map((item) => {
-        return MakeMenu(item)
+        const menuItem =  MakeMenu(item);
+        return menuItem
     });
+    //sort to preset menu order
+    pageMenu.sort((a,b)=>{return a.key-b.key});
 
     return (
         <div>
