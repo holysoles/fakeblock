@@ -82,9 +82,9 @@ export default async function GetPosts(page) {
             if(ytVideo[0] !== undefined){
                 const strippedYT = ytVideo[0].href.split("?u=")[1].split("&h=")[0];
                 const cleanedYT = strippedYT.replace(/%3A/g,':').replace(/%2F/g,'/');
-                //replace with invidious
-                const invidious = cleanedYT.replace("youtu.be","invidio.us");
-                post.video = invidious;
+                //replace with invidious?
+                //const invidious = cleanedYT.replace("youtu.be","invidio.us");
+                post.video = cleanedYT;
             }
             postsArray.push(post);
         }
