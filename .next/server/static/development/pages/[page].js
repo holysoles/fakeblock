@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1436,6 +1436,8 @@ function delBasePath(path) {
   return path.indexOf(basePath) === 0 ? path.substr(basePath.length) || '/' : path;
 }
 
+exports.delBasePath = delBasePath;
+
 function toRoute(path) {
   return path.replace(/\/$/, '') || '/';
 }
@@ -1447,8 +1449,8 @@ function fetchNextData(pathname, query, isServerRender, cb) {
 
   function getResponse() {
     return fetch(utils_1.formatWithValidation({
-      // @ts-ignore __NEXT_DATA__
-      pathname: `/_next/data/${__NEXT_DATA__.buildId}${pathname}.json`,
+      pathname: addBasePath( // @ts-ignore __NEXT_DATA__
+      `/_next/data/${__NEXT_DATA__.buildId}${delBasePath(pathname)}.json`),
       query
     }), {
       // Cookies are required to be present for Next.js' SSG "Preview Mode".
@@ -2193,11 +2195,16 @@ exports.getRouteMatcher = getRouteMatcher;
 
 Object.defineProperty(exports, "__esModule", {
   value: true
-});
+}); // this isn't importing the escape-string-regex module
+// to reduce bytes
+
+function escapeRegex(str) {
+  return str.replace(/[|\\{}()[\]^$+*?.-]/g, '\\$&');
+}
 
 function getRouteRegex(normalizedRoute) {
   // Escape all characters that could be considered RegEx
-  const escapedRoute = (normalizedRoute.replace(/\/$/, '') || '/').replace(/[|\\{}()[\]^$+*?.-]/g, '\\$&');
+  const escapedRoute = escapeRegex(normalizedRoute.replace(/\/$/, '') || '/');
   const groups = {};
   let groupIndex = 1;
   const parameterizedRoute = escapedRoute.replace(/\/\\\[([^/]+?)\\\](?=\/|$)/g, (_, $1) => {
@@ -2210,10 +2217,24 @@ function getRouteRegex(normalizedRoute) {
     };
     return isCatchAll ? '/(.+?)' : '/([^/]+?)';
   });
-  return {
+  let namedParameterizedRoute; // dead code eliminate for browser since it's only needed
+  // while generating routes-manifest
+
+  if (true) {
+    namedParameterizedRoute = escapedRoute.replace(/\/\\\[([^/]+?)\\\](?=\/|$)/g, (_, $1) => {
+      const isCatchAll = /^(\\\.){3}/.test($1);
+      const key = $1 // Un-escape key
+      .replace(/\\([|\\{}()[\]^$+*?.-])/g, '$1').replace(/^\.{3}/, '');
+      return isCatchAll ? `/(?<${escapeRegex(key)}>.+?)` : `/(?<${escapeRegex(key)}>[^/]+?)`;
+    });
+  }
+
+  return Object.assign({
     re: new RegExp('^' + parameterizedRoute + '(?:/)?$', 'i'),
     groups
-  };
+  }, namedParameterizedRoute ? {
+    namedRegex: `^${namedParameterizedRoute}(?:/)?$`
+  } : {});
 }
 
 exports.getRouteRegex = getRouteRegex;
@@ -2498,7 +2519,7 @@ const Page = ({
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /*!*************************************!*\
   !*** multi ./pages/[page]/index.js ***!
   \*************************************/

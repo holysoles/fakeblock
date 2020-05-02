@@ -8,11 +8,20 @@ export default class MakeVideoPlayer extends Component {
     }
 
     render () {
+
+        if(this.props.source.includes('invidio')){
+            return(
+                <iframe className={'videoPlayer'} src={this.props.source} />
+            )
+        }
+
+        else{
         return (
             <div className={'videoPlayer'}>
                 <ReactPlayer url={this.props.source} light={this.props.thumb}/>
                 <noscript>Embedded Videos Require Javascript to Play</noscript>
             </div>
-        )
+            )
+        }
     }
 }

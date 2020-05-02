@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -268,7 +268,7 @@ async function GetPosts(page) {
 
 
       let fbVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
-      let ytVideo = postWrappers[i].querySelectorAll("a[href*='youtu.be']");
+      let ytVideo = postWrappers[i].querySelectorAll("a[href*='youtu']");
 
       if (fbVideo.length > 0) {
         const videoSource = fbVideo[0].ajaxify;
@@ -279,9 +279,10 @@ async function GetPosts(page) {
 
       if (ytVideo[0] !== undefined) {
         const strippedYT = ytVideo[0].href.split("?u=")[1].split("&h=")[0];
-        const cleanedYT = strippedYT.replace(/%3A/g, ':').replace(/%2F/g, '/'); //replace with invidious
+        const cleanedYT = strippedYT.replace(/%3A/g, ':').replace(/%2F/g, '/').replace(/%3F/g, '?').replace(/%3D/, '=').replace('watch?v=', 'embed/'); //replace with invidious?
 
-        const invidious = cleanedYT.replace("youtu.be", "invidio.us");
+        const invidious = cleanedYT.replace("youtu.be", "invidio.us/embed").replace("www.youtube.com", "invidio.us");
+        console.log(invidious);
         post.video = invidious;
       }
 
@@ -367,95 +368,92 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MakeLightbox; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_image_lightbox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-image-lightbox */ "react-image-lightbox");
-/* harmony import */ var react_image_lightbox__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_image_lightbox__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/CardActionArea */ "@material-ui/core/CardActionArea");
-/* harmony import */ var _material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/CardMedia */ "@material-ui/core/CardMedia");
-/* harmony import */ var _material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_responsive_carousel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-responsive-carousel */ "react-responsive-carousel");
+/* harmony import */ var react_responsive_carousel__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_responsive_carousel__WEBPACK_IMPORTED_MODULE_1__);
 var _jsxFileName = "C:\\Users\\Patrick\\PhpstormProjects\\fakeblock\\components\\Posts\\MakeLightbox.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
-
-
 
 
 class MakeLightbox extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
-    this.state = {
-      photoIndex: 0,
-      isOpen: false
-    };
+    this.state = {};
   }
 
   render() {
-    const {
-      photoIndex,
-      isOpen
-    } = this.state;
     let images = this.props.images;
-    images.shift();
+    images.shift(); //if no images return empty div
 
     if (images.length === 0) {
       return __jsx("div", {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 24,
+          lineNumber: 16,
           columnNumber: 20
         }
       });
     }
 
-    return __jsx("div", {
+    if (images.length === 1) {
+      return __jsx(react_responsive_carousel__WEBPACK_IMPORTED_MODULE_1__["Carousel"], {
+        showArrows: false,
+        showThumbs: false,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 20,
+          columnNumber: 17
+        }
+      }, __jsx("div", {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 21,
+          columnNumber: 21
+        }
+      }, __jsx("img", {
+        src: images[0],
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 22,
+          columnNumber: 25
+        }
+      })));
+    } //create list of images
+
+
+    const imageList = images.map(image => {
+      return __jsx("div", {
+        key: images.indexOf(image),
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 30,
+          columnNumber: 16
+        }
+      }, __jsx("img", {
+        src: image,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 31,
+          columnNumber: 20
+        }
+      }));
+    });
+    return __jsx(react_responsive_carousel__WEBPACK_IMPORTED_MODULE_1__["Carousel"], {
+      showArrows: false,
+      dynamicHeight: true,
+      showThumbs: false,
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 28,
+        lineNumber: 37,
         columnNumber: 13
       }
-    }, __jsx(_material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_2___default.a, {
-      onClick: () => this.setState({
-        isOpen: true
-      }),
-      __self: this,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 29,
-        columnNumber: 17
-      }
-    }, __jsx(_material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_3___default.a, {
-      component: "img",
-      alt: "Post Image",
-      height: "250",
-      image: images[0],
-      title: "Post Image",
-      __self: this,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 30,
-        columnNumber: 21
-      }
-    })), isOpen && __jsx(react_image_lightbox__WEBPACK_IMPORTED_MODULE_1___default.a, {
-      mainSrc: images[photoIndex],
-      nextSrc: images[(photoIndex + 1) % images.length],
-      prevSrc: images[(photoIndex + images.length - 1) % images.length],
-      onCloseRequest: () => this.setState({
-        isOpen: false
-      }),
-      onMovePrevRequest: () => this.setState({
-        photoIndex: (photoIndex + images.length - 1) % images.length
-      }),
-      onMoveNextRequest: () => this.setState({
-        photoIndex: (photoIndex + 1) % images.length
-      }),
-      __self: this,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 40,
-        columnNumber: 21
-      }
-    }));
+    }, imageList);
   }
 
 }
@@ -504,7 +502,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
 const useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7__["makeStyles"])({
   root: {
     maxWidth: 750,
-    'margin': '15px'
+    'margin': '10px'
   }
 });
 function MakePosts(postsArray) {
@@ -526,7 +524,7 @@ function MakePosts(postsArray) {
     });
     let images = post.images.map(source => {
       //if image is avatar
-      if (source.includes('cp0')) {
+      if (source.includes('t1.0-1')) {
         Avatar = Object(_MakeAvatar__WEBPACK_IMPORTED_MODULE_0__["default"])(source, post.user);
       } else {
         return source;
@@ -538,7 +536,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 41,
+        lineNumber: 40,
         columnNumber: 21
       }
     }); //if there is a video post, overwrite thumbnail with video player component
@@ -551,7 +549,7 @@ function MakePosts(postsArray) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 44,
+          lineNumber: 43,
           columnNumber: 21
         }
       });
@@ -563,21 +561,21 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 48,
+        lineNumber: 47,
         columnNumber: 17
       }
     }, media, __jsx(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_3___default.a, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 50,
+        lineNumber: 49,
         columnNumber: 21
       }
     }, __jsx("div", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 51,
+        lineNumber: 50,
         columnNumber: 25
       }
     }, Avatar, __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
@@ -586,7 +584,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 53,
+        lineNumber: 52,
         columnNumber: 29
       }
     }, post.user)), __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
@@ -596,14 +594,14 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 57,
+        lineNumber: 56,
         columnNumber: 25
       }
     }, post.timestamp), paragraphs), __jsx(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_5___default.a, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 62,
+        lineNumber: 61,
         columnNumber: 21
       }
     }, __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
@@ -612,7 +610,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 63,
+        lineNumber: 62,
         columnNumber: 25
       }
     }, "Share"), __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
@@ -621,7 +619,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 66,
+        lineNumber: 65,
         columnNumber: 25
       }
     }, "Likes")));
@@ -657,31 +655,44 @@ class MakeVideoPlayer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   }
 
   render() {
-    return __jsx("div", {
-      className: 'videoPlayer',
-      __self: this,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 12,
-        columnNumber: 13
-      }
-    }, __jsx(react_player__WEBPACK_IMPORTED_MODULE_1___default.a, {
-      url: this.props.source,
-      light: this.props.thumb,
-      __self: this,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 13,
-        columnNumber: 17
-      }
-    }), __jsx("noscript", {
-      __self: this,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 14,
-        columnNumber: 17
-      }
-    }, "Embedded Videos Require Javascript to Play"));
+    if (this.props.source.includes('invidio')) {
+      return __jsx("iframe", {
+        className: 'videoPlayer',
+        src: this.props.source,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 14,
+          columnNumber: 17
+        }
+      });
+    } else {
+      return __jsx("div", {
+        className: 'videoPlayer',
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 20,
+          columnNumber: 13
+        }
+      }, __jsx(react_player__WEBPACK_IMPORTED_MODULE_1___default.a, {
+        url: this.props.source,
+        light: this.props.thumb,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 21,
+          columnNumber: 17
+        }
+      }), __jsx("noscript", {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 22,
+          columnNumber: 17
+        }
+      }, "Embedded Videos Require Javascript to Play"));
+    }
   }
 
 }
@@ -1776,6 +1787,8 @@ function delBasePath(path) {
   return path.indexOf(basePath) === 0 ? path.substr(basePath.length) || '/' : path;
 }
 
+exports.delBasePath = delBasePath;
+
 function toRoute(path) {
   return path.replace(/\/$/, '') || '/';
 }
@@ -1787,8 +1800,8 @@ function fetchNextData(pathname, query, isServerRender, cb) {
 
   function getResponse() {
     return fetch(utils_1.formatWithValidation({
-      // @ts-ignore __NEXT_DATA__
-      pathname: `/_next/data/${__NEXT_DATA__.buildId}${pathname}.json`,
+      pathname: addBasePath( // @ts-ignore __NEXT_DATA__
+      `/_next/data/${__NEXT_DATA__.buildId}${delBasePath(pathname)}.json`),
       query
     }), {
       // Cookies are required to be present for Next.js' SSG "Preview Mode".
@@ -2533,11 +2546,16 @@ exports.getRouteMatcher = getRouteMatcher;
 
 Object.defineProperty(exports, "__esModule", {
   value: true
-});
+}); // this isn't importing the escape-string-regex module
+// to reduce bytes
+
+function escapeRegex(str) {
+  return str.replace(/[|\\{}()[\]^$+*?.-]/g, '\\$&');
+}
 
 function getRouteRegex(normalizedRoute) {
   // Escape all characters that could be considered RegEx
-  const escapedRoute = (normalizedRoute.replace(/\/$/, '') || '/').replace(/[|\\{}()[\]^$+*?.-]/g, '\\$&');
+  const escapedRoute = escapeRegex(normalizedRoute.replace(/\/$/, '') || '/');
   const groups = {};
   let groupIndex = 1;
   const parameterizedRoute = escapedRoute.replace(/\/\\\[([^/]+?)\\\](?=\/|$)/g, (_, $1) => {
@@ -2550,10 +2568,24 @@ function getRouteRegex(normalizedRoute) {
     };
     return isCatchAll ? '/(.+?)' : '/([^/]+?)';
   });
-  return {
+  let namedParameterizedRoute; // dead code eliminate for browser since it's only needed
+  // while generating routes-manifest
+
+  if (true) {
+    namedParameterizedRoute = escapedRoute.replace(/\/\\\[([^/]+?)\\\](?=\/|$)/g, (_, $1) => {
+      const isCatchAll = /^(\\\.){3}/.test($1);
+      const key = $1 // Un-escape key
+      .replace(/\\([|\\{}()[\]^$+*?.-])/g, '$1').replace(/^\.{3}/, '');
+      return isCatchAll ? `/(?<${escapeRegex(key)}>.+?)` : `/(?<${escapeRegex(key)}>[^/]+?)`;
+    });
+  }
+
+  return Object.assign({
     re: new RegExp('^' + parameterizedRoute + '(?:/)?$', 'i'),
     groups
-  };
+  }, namedParameterizedRoute ? {
+    namedRegex: `^${namedParameterizedRoute}(?:/)?$`
+  } : {});
 }
 
 exports.getRouteRegex = getRouteRegex;
@@ -2808,7 +2840,7 @@ const Page = ({
 
 /***/ }),
 
-/***/ 3:
+/***/ 4:
 /*!*************************************!*\
   !*** multi ./pages/[page]/posts.js ***!
   \*************************************/
@@ -2864,17 +2896,6 @@ module.exports = require("@material-ui/core/Card");
 
 /***/ }),
 
-/***/ "@material-ui/core/CardActionArea":
-/*!***************************************************!*\
-  !*** external "@material-ui/core/CardActionArea" ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/core/CardActionArea");
-
-/***/ }),
-
 /***/ "@material-ui/core/CardActions":
 /*!************************************************!*\
   !*** external "@material-ui/core/CardActions" ***!
@@ -2894,17 +2915,6 @@ module.exports = require("@material-ui/core/CardActions");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/CardContent");
-
-/***/ }),
-
-/***/ "@material-ui/core/CardMedia":
-/*!**********************************************!*\
-  !*** external "@material-ui/core/CardMedia" ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/core/CardMedia");
 
 /***/ }),
 
@@ -3150,17 +3160,6 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ "react-image-lightbox":
-/*!***************************************!*\
-  !*** external "react-image-lightbox" ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("react-image-lightbox");
-
-/***/ }),
-
 /***/ "react-is":
 /*!***************************!*\
   !*** external "react-is" ***!
@@ -3180,6 +3179,17 @@ module.exports = require("react-is");
 /***/ (function(module, exports) {
 
 module.exports = require("react-player");
+
+/***/ }),
+
+/***/ "react-responsive-carousel":
+/*!********************************************!*\
+  !*** external "react-responsive-carousel" ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("react-responsive-carousel");
 
 /***/ }),
 

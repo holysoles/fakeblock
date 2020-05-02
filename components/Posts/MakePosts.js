@@ -12,7 +12,7 @@ import MakeVideoPlayer from "./MakeVideoPlayer";
 const useStyles = makeStyles({
     root: {
         maxWidth: 750,
-        'margin': '15px',
+        'margin': '10px',
     },
 });
 
@@ -30,14 +30,13 @@ export default function MakePosts(postsArray) {
         });
         let images = post.images.map((source) => {
             //if image is avatar
-            if (source.includes('cp0')) {
+            if (source.includes('t1.0-1')) {
                 Avatar = MakeAvatar(source, post.user)
             }
             else {
                 return source
             }
         });
-
         let media = <MakeLightbox images={images}/>;
         //if there is a video post, overwrite thumbnail with video player component
         if(post.video.length > 0){

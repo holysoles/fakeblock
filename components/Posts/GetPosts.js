@@ -72,7 +72,7 @@ export default async function GetPosts(page) {
             }
             //if post has a facebook or youtube video, grab source and set video property in post object
             let fbVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
-            let ytVideo = postWrappers[i].querySelectorAll("a[href*='youtu.be']");
+            let ytVideo = postWrappers[i].querySelectorAll("a[href*='youtu']");
             if (fbVideo.length > 0){
                 const videoSource = fbVideo[0].ajaxify;
                 const embeddedVideo = "https://www.facebook.com" + videoSource;
@@ -81,10 +81,12 @@ export default async function GetPosts(page) {
             }
             if(ytVideo[0] !== undefined){
                 const strippedYT = ytVideo[0].href.split("?u=")[1].split("&h=")[0];
-                const cleanedYT = strippedYT.replace(/%3A/g,':').replace(/%2F/g,'/');
+                const cleanedYT = strippedYT.replace(/%3A/g,':').replace(/%2F/g,'/').replace(/%3F/g,'?').replace(/%3D/,'=').replace('watch?v=','embed/');
                 //replace with invidious?
-                //const invidious = cleanedYT.replace("youtu.be","invidio.us");
-                post.video = cleanedYT;
+                const invidious = cleanedYT.replace("youtu.be","invidio.us/embed").replace("www.youtube.com","invidio.us");
+                console.log(invidious);
+
+                post.video = invidious;
             }
             postsArray.push(post);
         }
