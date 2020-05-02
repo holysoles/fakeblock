@@ -204,7 +204,7 @@ async function GetPosts(page) {
   const timelineCursor = "%7B%22timeline_cursor%22%3A%22%22%2C%22timeline_section_cursor%22%3Anull%2C%22has_next_page%22%3Atrue%7D";
   const params = {
     'surface': 'www_pages_posts',
-    'unit_count': '10',
+    'unit_count': '8',
     //sets how many posts to get
     '__a': '1'
   };
@@ -264,16 +264,25 @@ async function GetPosts(page) {
             post.images.push(image.getAttribute('src'));
           }
         }
-      } //if post has a video, grab source and set video property in post object
+      } //if post has a facebook or youtube video, grab source and set video property in post object
 
 
-      const postHasVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
+      let fbVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
+      let ytVideo = postWrappers[i].querySelectorAll("a[href*='youtu.be']");
 
-      if (postHasVideo.length > 0) {
-        const videoSource = postHasVideo[0].attributes.ajaxify.value;
-        const embeddedVideo = "https://www.facebook.com" + videoSource;
-        const trueSource = await Object(_GetTrueVideoSource__WEBPACK_IMPORTED_MODULE_3__["default"])(embeddedVideo);
+      if (fbVideo.length > 0) {
+        const videoSource = fbVideo[0].ajaxify;
+        const embeddedVideo = "https://www.facebook.com" + videoSource; //const trueSource = await GetTrueVideoSource(embeddedVideo);
+
         post.video = embeddedVideo;
+      }
+
+      if (ytVideo[0] !== undefined) {
+        const strippedYT = ytVideo[0].href.split("?u=")[1].split("&h=")[0];
+        const cleanedYT = strippedYT.replace(/%3A/g, ':').replace(/%2F/g, '/'); //replace with invidious
+
+        const invidious = cleanedYT.replace("youtu.be", "invidio.us");
+        post.video = invidious;
       }
 
       postsArray.push(post);

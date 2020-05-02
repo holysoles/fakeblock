@@ -17,7 +17,7 @@ export default async function GetPosts(page) {
     const timelineCursor = "%7B%22timeline_cursor%22%3A%22%22%2C%22timeline_section_cursor%22%3Anull%2C%22has_next_page%22%3Atrue%7D";
     const params = {
         'surface': 'www_pages_posts',
-        'unit_count': '10', //sets how many posts to get
+        'unit_count': '8', //sets how many posts to get
         '__a': '1'
     };
     const headers = new Headers({'User-Agent': "PostmanRuntime/7.24.1"});
@@ -70,13 +70,21 @@ export default async function GetPosts(page) {
                     }
                 }
             }
-            //if post has a video, grab source and set video property in post object
-            const postHasVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
-            if(postHasVideo.length > 0){
-                const videoSource = postHasVideo[0].attributes.ajaxify.value;
+            //if post has a facebook or youtube video, grab source and set video property in post object
+            let fbVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
+            let ytVideo = postWrappers[i].querySelectorAll("a[href*='youtu.be']");
+            if (fbVideo.length > 0){
+                const videoSource = fbVideo[0].ajaxify;
                 const embeddedVideo = "https://www.facebook.com" + videoSource;
-                const trueSource = await GetTrueVideoSource(embeddedVideo);
+                //const trueSource = await GetTrueVideoSource(embeddedVideo);
                 post.video = (embeddedVideo)
+            }
+            if(ytVideo[0] !== undefined){
+                const strippedYT = ytVideo[0].href.split("?u=")[1].split("&h=")[0];
+                const cleanedYT = strippedYT.replace(/%3A/g,':').replace(/%2F/g,'/');
+                //replace with invidious
+                const invidious = cleanedYT.replace("youtu.be","invidio.us");
+                post.video = invidious;
             }
             postsArray.push(post);
         }
