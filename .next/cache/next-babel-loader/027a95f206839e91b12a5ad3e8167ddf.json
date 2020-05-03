@@ -1,0 +1,1 @@
+{"ast":null,"code":"var __jsx = React.createElement;\nimport React, { Component } from 'react';\nexport default class MakeGallery extends Component {\n  constructor(props) {\n    super(props);\n  }\n\n  render() {\n    this.props.sources;\n    return __jsx(\"div\", null, \" gallery \");\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

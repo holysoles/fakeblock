@@ -12,7 +12,7 @@ import MakeVideoPlayer from "./MakeVideoPlayer";
 const useStyles = makeStyles({
     root: {
         maxWidth: 750,
-        'margin': '10px',
+        'margin': '4%',
     },
 });
 

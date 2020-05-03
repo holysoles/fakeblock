@@ -502,7 +502,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
 const useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7__["makeStyles"])({
   root: {
     maxWidth: 750,
-    'margin': '10px'
+    'margin': '4%'
   }
 });
 function MakePosts(postsArray) {
