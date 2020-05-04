@@ -38,7 +38,6 @@ export default function MakePosts(postsArray) {
             }
         });
         //remove profile pic from image array
-        images = images.shift();
         let media = <MakeGallery images={images}/>;
         //if there is a video post, overwrite thumbnail with video player component
         if(post.video.length > 0){

@@ -10,6 +10,7 @@ export default class MakeGallery extends Component {
 
     render() {
         let images = this.props.images;
+        images.shift();
         //if no images return empty div
         if(images.length === 0){
             return <div/>

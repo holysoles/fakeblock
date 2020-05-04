@@ -17,7 +17,7 @@ export default async function GetPosts(page) {
     const timelineCursor = "%7B%22timeline_cursor%22%3A%22%22%2C%22timeline_section_cursor%22%3Anull%2C%22has_next_page%22%3Atrue%7D";
     const params = {
         'surface': 'www_pages_posts',
-        'unit_count': '8', //sets how many posts to get
+        'unit_count': '12', //sets how many posts to get
         '__a': '1'
     };
     const headers = new Headers({'User-Agent': "PostmanRuntime/7.24.1"});
