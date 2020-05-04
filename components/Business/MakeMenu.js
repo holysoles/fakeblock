@@ -22,31 +22,31 @@ export default function MakeMenu(item) {
     //look for match menu icons
     switch(text){
         case "About":
-            icon = <InfoIcon/>;
+            icon = <InfoIcon width="10%" height="10%"/>;
             order = 0;
             break;
         case "Posts":
-            icon = <DynamicFeedIcon/>;
+            icon = <DynamicFeedIcon width="10%" height="10%"/>;
             order = 1;
             break;
         case "Menu":
-            icon = <MenuBookIcon/>;
+            icon = <MenuBookIcon width="10%" height="10%"/>;
             order = 2;
             break;
         case "Photos":
-            icon = <PhotoLibraryIcon/>;
+            icon = <PhotoLibraryIcon width="10%" height="10%"/>;
             order = 3;
             break;
         case "Videos":
-            icon = <VideoLibraryIcon/>;
+            icon = <VideoLibraryIcon width="10%" height="10%"/>;
             order = 4;
             break;
         case "Events":
-            icon = <EventIcon/>;
+            icon = <EventIcon width="10%" height="10%"/>;
             order = 5;
             break;
         case "Reviews":
-            icon = <RateReviewIcon/>;
+            icon = <RateReviewIcon width="10%" height="10%"/>;
             order = 6;
             break;
     }

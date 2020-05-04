@@ -379,7 +379,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(true);
 // Module
-exports.push([module.i, ".pagetitle{\r\n    padding-top: 3%;\r\n}\r\n.videoTitle{\r\n    display:block;\r\n    height:250px;\r\n}\r\n\r\n.videoPlayer{\r\n    width: 100%;\r\n}", "",{"version":3,"sources":["app.css"],"names":[],"mappings":"AAAA;IACI,eAAe;AACnB;AACA;IACI,aAAa;IACb,YAAY;AAChB;;AAEA;IACI,WAAW;AACf","file":"app.css","sourcesContent":[".pagetitle{\r\n    padding-top: 3%;\r\n}\r\n.videoTitle{\r\n    display:block;\r\n    height:250px;\r\n}\r\n\r\n.videoPlayer{\r\n    width: 100%;\r\n}"]}]);
+exports.push([module.i, ".pagetitle{\r\n    padding-top: 3%;\r\n}\r\n.videoTitle{\r\n    display:block;\r\n    height:250px;\r\n}\r\n\r\n.videoPlayer{\r\n    width: 100%;\r\n}\r\n", "",{"version":3,"sources":["app.css"],"names":[],"mappings":"AAAA;IACI,eAAe;AACnB;AACA;IACI,aAAa;IACb,YAAY;AAChB;;AAEA;IACI,WAAW;AACf","file":"app.css","sourcesContent":[".pagetitle{\r\n    padding-top: 3%;\r\n}\r\n.videoTitle{\r\n    display:block;\r\n    height:250px;\r\n}\r\n\r\n.videoPlayer{\r\n    width: 100%;\r\n}\r\n"]}]);
 // Exports
 module.exports = exports;
 

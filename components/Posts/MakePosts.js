@@ -6,8 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from '@material-ui/core/styles';
-import MakeLightbox from "./MakeLightbox";
 import MakeVideoPlayer from "./MakeVideoPlayer";
+import MakeGallery from "../Photos/MakeGallery";
 
 const useStyles = makeStyles({
     root: {
@@ -37,7 +37,9 @@ export default function MakePosts(postsArray) {
                 return source
             }
         });
-        let media = <MakeLightbox images={images}/>;
+        //remove profile pic from image array
+        images = images.shift();
+        let media = <MakeGallery images={images}/>;
         //if there is a video post, overwrite thumbnail with video player component
         if(post.video.length > 0){
             media = <MakeVideoPlayer source={post.video} thumb={post.images[1]} />
