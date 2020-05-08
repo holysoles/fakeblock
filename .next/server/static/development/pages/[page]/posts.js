@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -343,21 +343,31 @@ async function GetPosts(page) {
         timestamp: '',
         text: [],
         images: [],
-        video: ''
-      };
-      const postImages = postWrappers[i].getElementsByTagName('img');
-      const postParagraphs = postWrappers[i].getElementsByTagName('p'); //get username name, timestamp from post
+        video: '',
+        link: ''
+      }; //get username name, timestamp from post
 
       const usernameWrapper = postWrappers[i].getElementsByClassName('fwb').item(0);
       const username = usernameWrapper.textContent;
       post.user = username;
       const timestamp = postWrappers[i].getElementsByClassName('timestampContent')[0].textContent;
-      post.timestamp = timestamp; //if post has paragraphs, iterate over each and push to text array in post object
+      post.timestamp = timestamp; //get post paragraphs, iterate over each and push to text array in post object
+
+      const postParagraphsCollection = postWrappers[i].getElementsByTagName('p');
+      const imageText = postWrappers[i].querySelectorAll("span[style*='text-align:center;align-self:auto']");
+      let postParagraphs = Array.prototype.slice.apply(postParagraphsCollection); //imageText for posts with text on top of image background
+
+      if (Array.from(imageText).length > 0) {
+        postParagraphs = postParagraphs.concat(Array.from(imageText)[0]);
+      }
 
       for (let j = 0; j < postParagraphs.length; j++) {
+        console.log("paragraph: ", postParagraphs[j]);
         post.text.push(postParagraphs[j].textContent);
       } //if post has images, iterate over each and push to image array in post object
 
+
+      const postImages = postWrappers[i].getElementsByTagName('img');
 
       if (postImages.length > 0) {
         for (let k = 0; k < postImages.length; k++) {
@@ -367,6 +377,19 @@ async function GetPosts(page) {
           if (image.getAttribute('alt') !== imagesToIgnore) {
             post.images.push(image.getAttribute('src'));
           }
+        }
+      }
+
+      let externalLink = postWrappers[i].querySelectorAll("a[rel='noopener nofollow']");
+
+      if (externalLink[0] !== undefined) {
+        if (externalLink[0].href.includes('youtu')) {//ignore
+        } else {
+          //set external link here
+          const rawLink = externalLink[0].href;
+          const encodedURI = rawLink.replace('https://l.facebook.com/l.php?u=', '').split("&h=")[0];
+          const cleanedLink = decodeURIComponent(encodedURI);
+          post.link = cleanedLink;
         }
       } //if post has a facebook or youtube video, grab source and set video property in post object
 
@@ -422,7 +445,6 @@ async function GetTrueVideoSource(videoUrl) {
 
   const document = DOMParser(resText);
   const videoElement = document.querySelectorAll("div[data-sigil='inlineVideo']")[0];
-  console.log(videoElement);
 }
 
 /***/ }),
@@ -487,8 +509,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _MakeVideoPlayer__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./MakeVideoPlayer */ "./components/Posts/MakeVideoPlayer.js");
 /* harmony import */ var _Photos_MakeGallery__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Photos/MakeGallery */ "./components/Photos/MakeGallery.js");
+/* harmony import */ var linkifyjs_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! linkifyjs/react */ "linkifyjs/react");
+/* harmony import */ var linkifyjs_react__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(linkifyjs_react__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _material_ui_core_Link__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/Link */ "@material-ui/core/Link");
+/* harmony import */ var _material_ui_core_Link__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Link__WEBPACK_IMPORTED_MODULE_11__);
 var _jsxFileName = "C:\\Users\\Patrick\\PhpstormProjects\\fakeblock\\components\\Posts\\MakePosts.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
+
 
 
 
@@ -509,7 +537,20 @@ function MakePosts(postsArray) {
   const classes = useStyles();
   const postsList = postsArray.map(post => {
     let Avatar = Object(_MakeAvatar__WEBPACK_IMPORTED_MODULE_0__["default"])('/');
-    const paragraphs = post.text.map((paragraph, index) => {
+    let paragraphs = post.text.map((paragraph, index) => {
+      //look for link in paragraph text to create hyperlink
+      paragraph = __jsx(linkifyjs_react__WEBPACK_IMPORTED_MODULE_10___default.a, {
+        tagName: "p",
+        options: {
+          defaultProtocol: 'https'
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 29,
+          columnNumber: 25
+        }
+      }, paragraph);
       return __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
         variant: "body2",
         component: "p",
@@ -517,7 +558,7 @@ function MakePosts(postsArray) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 26,
+          lineNumber: 32,
           columnNumber: 17
         }
       }, paragraph);
@@ -536,7 +577,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 41,
+        lineNumber: 47,
         columnNumber: 21
       }
     }); //if there is a video post, overwrite thumbnail with video player component
@@ -549,10 +590,32 @@ function MakePosts(postsArray) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 44,
+          lineNumber: 50,
           columnNumber: 21
         }
       });
+    }
+
+    let externalLinkPreview = __jsx("p", {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 53,
+        columnNumber: 35
+      }
+    });
+
+    if (post.link.length > 0) {
+      paragraphs = __jsx(_material_ui_core_Link__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        href: post.link,
+        rel: 'noopener noreferrer',
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 56,
+          columnNumber: 17
+        }
+      }, paragraphs);
     }
 
     return __jsx(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -561,21 +624,21 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 48,
+        lineNumber: 62,
         columnNumber: 17
       }
     }, media, __jsx(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_3___default.a, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 50,
+        lineNumber: 64,
         columnNumber: 21
       }
     }, __jsx("div", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 51,
+        lineNumber: 65,
         columnNumber: 25
       }
     }, Avatar, __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
@@ -584,7 +647,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 53,
+        lineNumber: 67,
         columnNumber: 29
       }
     }, post.user)), __jsx(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {
@@ -594,14 +657,21 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 57,
+        lineNumber: 71,
         columnNumber: 25
       }
-    }, post.timestamp), paragraphs), __jsx(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_5___default.a, {
+    }, post.timestamp), paragraphs, __jsx("div", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 62,
+        lineNumber: 75,
+        columnNumber: 25
+      }
+    }, externalLinkPreview)), __jsx(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_5___default.a, {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 79,
         columnNumber: 21
       }
     }, __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
@@ -610,7 +680,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 63,
+        lineNumber: 80,
         columnNumber: 25
       }
     }, "Share"), __jsx(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
@@ -619,7 +689,7 @@ function MakePosts(postsArray) {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 66,
+        lineNumber: 83,
         columnNumber: 25
       }
     }, "Likes")));
@@ -2840,7 +2910,7 @@ const Page = ({
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /*!*************************************!*\
   !*** multi ./pages/[page]/posts.js ***!
   \*************************************/
@@ -2948,6 +3018,17 @@ module.exports = require("@material-ui/core/Drawer");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/IconButton");
+
+/***/ }),
+
+/***/ "@material-ui/core/Link":
+/*!*****************************************!*\
+  !*** external "@material-ui/core/Link" ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Link");
 
 /***/ }),
 
@@ -3102,6 +3183,17 @@ module.exports = require("clsx");
 /***/ (function(module, exports) {
 
 module.exports = require("jsdom");
+
+/***/ }),
+
+/***/ "linkifyjs/react":
+/*!**********************************!*\
+  !*** external "linkifyjs/react" ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("linkifyjs/react");
 
 /***/ }),
 

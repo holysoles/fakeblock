@@ -8,6 +8,8 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from '@material-ui/core/styles';
 import MakeVideoPlayer from "./MakeVideoPlayer";
 import MakeGallery from "../Photos/MakeGallery";
+import Linkify from 'linkifyjs/react';
+import Link from '@material-ui/core/Link'
 
 const useStyles = makeStyles({
     root: {
@@ -21,7 +23,11 @@ export default function MakePosts(postsArray) {
 
     const postsList = postsArray.map((post) => {
         let Avatar = MakeAvatar('/');
-        const paragraphs = post.text.map((paragraph, index) => {
+        let paragraphs = post.text.map((paragraph, index) => {
+
+            //look for link in paragraph text to create hyperlink
+            paragraph = <Linkify tagName="p" options={{defaultProtocol: 'https'}}>{paragraph}</Linkify>;
+
             return (
                 <Typography variant="body2" component="p" key={index}>
                     {paragraph}
@@ -44,6 +50,14 @@ export default function MakePosts(postsArray) {
             media = <MakeVideoPlayer source={post.video} thumb={post.images[1]} />
         }
 
+        let externalLinkPreview = <p/>;
+        if(post.link.length > 0){
+            paragraphs =
+                <Link href={post.link} rel={'noopener noreferrer'}>
+                    {paragraphs}
+                </Link>
+        }
+
         return (
                 <Card key={post.timestamp} className={classes.root}>
                     {media}
@@ -58,6 +72,9 @@ export default function MakePosts(postsArray) {
                             {post.timestamp}
                         </Typography>
                         {paragraphs}
+                        <div>
+                            {externalLinkPreview}
+                        </div>
                     </CardContent>
                     <CardActions>
                         <Button size="small" color="primary">

@@ -45,9 +45,7 @@ export default async function GetPosts(page) {
         //console.log("how many post containers: ", postWrappers.length)
         for (let i = 0; i < postWrappers.length; i++) {
             //construct post object
-            let post = {user: '', timestamp: '', text: [], images: [], video: ''};
-            const postImages = postWrappers[i].getElementsByTagName('img');
-            const postParagraphs = postWrappers[i].getElementsByTagName('p');
+            let post = {user: '', timestamp: '', text: [], images: [], video: '', link: ''};
 
             //get username name, timestamp from post
             const usernameWrapper = postWrappers[i].getElementsByClassName('fwb').item(0);
@@ -56,11 +54,21 @@ export default async function GetPosts(page) {
             const timestamp = postWrappers[i].getElementsByClassName('timestampContent')[0].textContent;
             post.timestamp = timestamp;
 
-            //if post has paragraphs, iterate over each and push to text array in post object
+            //get post paragraphs, iterate over each and push to text array in post object
+            const postParagraphsCollection = postWrappers[i].getElementsByTagName('p');
+            const imageText = postWrappers[i].querySelectorAll("span[style*='text-align:center;align-self:auto']");
+            let postParagraphs = Array.prototype.slice.apply(postParagraphsCollection);
+            //imageText for posts with text on top of image background
+            if(Array.from(imageText).length > 0){
+                postParagraphs = postParagraphs.concat(Array.from(imageText)[0]);
+            }
             for (let j = 0; j < postParagraphs.length; j++) {
+                console.log("paragraph: ",postParagraphs[j]);
                 post.text.push(postParagraphs[j].textContent);
             }
+
             //if post has images, iterate over each and push to image array in post object
+            const postImages = postWrappers[i].getElementsByTagName('img');
             if (postImages.length > 0) {
                 for (let k = 0; k < postImages.length; k++) {
                     const image = postImages.item(k);
@@ -70,8 +78,23 @@ export default async function GetPosts(page) {
                     }
                 }
             }
+            let externalLink = postWrappers[i].querySelectorAll("a[rel='noopener nofollow']");
+            if(externalLink[0] !== undefined){
+                if(externalLink[0].href.includes('youtu')){
+                    //ignore
+                }
+                else{
+                    //set external link here
+                    const rawLink = externalLink[0].href;
+                    const encodedURI = rawLink.replace('https://l.facebook.com/l.php?u=','').split("&h=")[0];
+                    const cleanedLink = decodeURIComponent(encodedURI);
+                    post.link = cleanedLink;
+                }
+            }
+
             //if post has a facebook or youtube video, grab source and set video property in post object
             let fbVideo = postWrappers[i].querySelectorAll("a[aria-label~='Video,']");
+
             let ytVideo = postWrappers[i].querySelectorAll("a[href*='youtu']");
             if (fbVideo.length > 0){
                 const videoSource = fbVideo[0].ajaxify;

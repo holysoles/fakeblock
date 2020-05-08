@@ -9,6 +9,4 @@ export default async function GetTrueVideoSource(videoUrl){
 
     const videoElement = document.querySelectorAll("div[data-sigil='inlineVideo']")[0];
 
-    console.log(videoElement)
-
 }
