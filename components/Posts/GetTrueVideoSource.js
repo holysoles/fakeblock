@@ -1,12 +1,14 @@
 import fetch from "node-fetch";
 
 export default async function GetTrueVideoSource(videoUrl){
+
     //fetch video page
-    const res = await fetch(videoUrl);
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+    const res = await fetch(videoUrl, requestOptions);
     const resText = await res.text();
-    //create html document from response
-    const document = DOMParser(resText);
-
-    const videoElement = document.querySelectorAll("div[data-sigil='inlineVideo']")[0];
-
+    const videoSource = resText.split("video:[{url:\"")[1].split("\",start:0")[0];
+    return videoSource
 }

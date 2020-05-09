@@ -6,6 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
 import MakeMenu from "../../components/Business/MakeMenu";
 import fetch from "node-fetch";
+import jsdom from "jsdom"
 
 export async function getServerSideProps(context){
     //handle if person or business url
@@ -18,7 +19,6 @@ export async function getServerSideProps(context){
     const resText = await res.text();
 
     //import jsdom for dom capabilties on server
-    const jsdom = require("jsdom");
     const { JSDOM } = jsdom;
     const dom = new JSDOM(resText);
     const document = dom.window.document;

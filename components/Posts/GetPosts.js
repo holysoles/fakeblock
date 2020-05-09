@@ -3,9 +3,9 @@ import fetch from "node-fetch"
 import {Headers} from "node-fetch";
 import GetFBID from "../GetFBID";
 import GetTrueVideoSource from "./GetTrueVideoSource";
+import jsdom from "jsdom"
 
 export default async function GetPosts(page) {
-    const jsdom = require("jsdom");
     const {JSDOM} = jsdom;
     const dom = new JSDOM();
     const document = dom.window.document;
@@ -99,17 +99,13 @@ export default async function GetPosts(page) {
             if (fbVideo.length > 0){
                 const videoSource = fbVideo[0].ajaxify;
                 const embeddedVideo = "https://www.facebook.com" + videoSource;
-                //const trueSource = await GetTrueVideoSource(embeddedVideo);
-                post.video = (embeddedVideo)
+                const trueSource = await GetTrueVideoSource(embeddedVideo);
+                post.video = (trueSource)
             }
             if(ytVideo[0] !== undefined){
                 const strippedYT = ytVideo[0].href.split("?u=")[1].split("&h=")[0];
                 const cleanedYT = strippedYT.replace(/%3A/g,':').replace(/%2F/g,'/').replace(/%3F/g,'?').replace(/%3D/,'=').replace('watch?v=','embed/');
-                //replace with invidious?
-                const invidious = cleanedYT.replace("youtu.be","invidio.us/embed").replace("www.youtube.com","invidio.us");
-                console.log(invidious);
-
-                post.video = invidious;
+                post.video = cleanedYT;
             }
             postsArray.push(post);
         }

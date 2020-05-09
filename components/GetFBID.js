@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React from "react";
 import fetch from "node-fetch"
+import jsdom from 'jsdom'
 
 export default async function GetFBID(pagename){
     let fbID = '';
 
-    const jsdom = require("jsdom");
     const { JSDOM } = jsdom;
 
     console.log(pagename);

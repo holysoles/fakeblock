@@ -9,16 +9,18 @@ export default class MakeVideoPlayer extends Component {
 
     render () {
 
-        if(this.props.source.includes('invidio')){
+        if(this.props.source.includes('youtu')){
+            //replace with invidious
+            const invidious = this.props.source.replace("youtu.be","invidio.us/embed").replace("www.youtube.com","invidio.us");
             return(
-                <iframe className={'videoPlayer'} src={this.props.source} />
+                <iframe className={'videoPlayer'} src={invidious} />
             )
         }
 
         else{
         return (
             <div className={'videoPlayer'}>
-                <ReactPlayer url={this.props.source} light={this.props.thumb}/>
+                <ReactPlayer url={this.props.source} controls width={'fill'} light={this.props.thumb}/>
                 <noscript>Embedded Videos Require Javascript to Play</noscript>
             </div>
             )
