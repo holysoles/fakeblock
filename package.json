@@ -15,7 +15,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.13",
     "@material-ui/icons": "^4.9.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dom-parser": "^0.1.6",
     "jsdom": "^16.2.2",
     "linkifyjs": "^2.1.9",
