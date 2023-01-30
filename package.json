@@ -19,7 +19,7 @@
     "dom-parser": "^0.1.6",
     "jsdom": "^16.2.2",
     "linkifyjs": "^2.1.9",
-    "next": "^9.3.6",
+    "next": "^13.1.6",
     "node-fetch": "^2.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
